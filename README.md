@@ -1,9 +1,9 @@
 # Node REST Server + MongoDB/MySql + JWT, Jhon Robert
 
-npm install;
-npm test to run test;
-node index.js to run server;
-Check in src/Sql/create/create.js for your database config
+npm install;</br>
+npm test to run test; </br>
+node index.js to run server;</br>
+Check in src/Sql/create/create.js for your database config</br>
 
 # Routes for postman: 
 http://localhost:8000/players/
