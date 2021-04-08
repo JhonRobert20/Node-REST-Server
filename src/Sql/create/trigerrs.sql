@@ -1,0 +1,4 @@
+CREATE DEFINER = CURRENT_USER TRIGGER `node_api`.`throws_BEFORE_INSERT` BEFORE INSERT ON `node_api`.`throws` FOR EACH ROW BEGIN set new.win =  case new.result when 7 then 'w' else 'l' end; END
+CREATE DEFINER = CURRENT_USER TRIGGER `node_api`.`users_BEFORE_UPDATE` BEFORE UPDATE ON `node_api`.`users` FOR EACH ROW BEGIN set new.percent = case new.times when 0 then 0 else  (new.wins / new.times) end; END
+CREATE DEFINER = CURRENT_USER TRIGGER `node_api`.`throws_AFTER_INSERT` AFTER INSERT ON `node_api`.`throws` FOR EACH ROW BEGIN update users set times = (select count(*) from throws where id_user = new.id_user),  wins = (select count(*) from throws where (win = 'w' and id_user = new.id_user)) where id = new.id_user; END
+CREATE DEFINER = CURRENT_USER TRIGGER `node_api`.`throws_AFTER_DELETE` AFTER DELETE ON `node_api`.`throws` FOR EACH ROW BEGIN update users  set times = times - 1, wins =  case old.win when 'w' then wins -1 else wins end where id = old.id_user; END
