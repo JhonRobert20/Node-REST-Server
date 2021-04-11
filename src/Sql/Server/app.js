@@ -1,41 +1,47 @@
 const express = require('express');
 var { json } = require('body-parser');
-const { callConnect } = require('../create/create')
-const { createUser, makeThrow } = require('../crud/add');
-const { selectPlayer, eachPlayerMedia, allUsersMedia, losersData, winnersData } = require('../crud/read')
-const { deleteThrowsUser } = require('../crud/delete')
-const { updateName } = require('../crud/update')
+const { sql } = require('../create/create');
 
-callConnect();
+const { addUser, makeThrow } = require('../crud/add');
+const { updateName } = require('../crud/update')
+const { findById, findAll, ranking, rankingLosers, rankingWinners } = require('../crud/read')
+const { deleteThrows } = require('../crud/delete')
+const { jwt, verifyToken, user } = require('../../Jwt/auth/app');
+
+
+sql.connect()
+
 const app = express();
 app.use(json());
 
-app.get("/players/",(req, res) => {
-    eachPlayerMedia(res)
+app.post('/login', (req, res) => {
+    jwt.sign({ user }, 'secretkey', { expiresIn: '3600s' }, (err, token) => {
+        if(!err) res.json({ token });
+    })
 });
 
-app.put("/players/:id/:name", (req, res) => {
+app.route("/players/")
+.get(verifyToken, (req, res) => { findAll(res) })
+.post(verifyToken, (req, res) => { addUser(req.body.name, res) })
+
+app.put("/players/:id/:name", verifyToken, (req, res) => {
     updateName(req.params.id ,req.params.name, res);
 })
 
-app.post("/players/", (req, res) => {
-    createUser(req.body.name, res)
-})
-
 app.route("/players/:id/games/")
-.get((req, res) => { selectPlayer(req.params.id, res) })
-.post((req, res) => { makeThrow(req.params.id, res) })
-.delete((req, res) => { deleteThrowsUser(req.params.id, res) });
+.get(verifyToken, (req, res) => { findById(req.params.id, res) })
+.post(verifyToken, (req, res) => { makeThrow(req.params.id, res) })
+.delete(verifyToken, (req, res) => { deleteThrows(req.params.id, res) });
 
-app.get("/players/ranking/", (err, res) => {
-    allUsersMedia(res);
+app.get("/players/ranking/", verifyToken, (err, res) => {
+    ranking(res);
 });
 
-app.get("/players/ranking/losers/", (err, res) => {
-    losersData(res);
+app.get("/players/ranking/losers/", verifyToken, (err, res) => {
+    rankingLosers(res);
 })
-app.get("/players/ranking/winners/", (err, res) => {
-    winnersData(res);
+app.get("/players/ranking/winners/", verifyToken, (err, res) => {
+    rankingWinners(res);
 })
 
 module.exports.app = app;

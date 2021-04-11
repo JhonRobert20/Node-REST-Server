@@ -5,7 +5,7 @@ function sendResponse(res, err, data){
       success: false,
       message: err
     })
-  } else if (!data){
+  } else if (!data ){
     res.status = 204;
     res.json({
       success: false,

@@ -3,12 +3,18 @@
 npm install;
 npm test to run test;
 node index.js to run server;
-Check in src/Sql/create/create.js for your database config
+Check in src/Config for your database config
 
-# Routes for postman: 
+# Routes for postman:
+
+http://localhost:8000/login/
+- .post, you don't need pass nothing
+- In headers: Authorization  Bearer "your token"
+- You can use this token up to 1 hour after creating it
+
 http://localhost:8000/players/
 - .get & post
-- in post use body, { "name" : "new name" }
+- in post use body: { "name" : "new name" }
 
 http://localhost:8000/players/:id/:name
 - .put, pass the id and the new name
@@ -27,4 +33,4 @@ http://localhost:8000/players/ranking/winners
 - .get
 
 # test
-Only sql has been done, mongoDb and JWT have not been added yet
+Test maked in mysql and mongo

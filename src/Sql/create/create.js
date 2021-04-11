@@ -1,48 +1,51 @@
-const mysql = require('mysql')    
 const fs = require('fs');
+const { connection } = require('../../Config/sql')
 
-var user = "root";
-var password = ""; 
-var connection = mysql.createConnection({
-  host : 'localhost',
-  user : user,
-  password : password,
-  multipleStatements: true
-});
 var first = "use node_api";
-var create = fs.readFileSync("src/Sql/create/crear.sql", "utf-8");
-var trigers = fs.readFileSync("src/Sql/create/trigerrs.sql", "utf-8");
+var create = fs.readFileSync("src/Sql/create/createData/crear.sql", "utf-8");
+var trigers = fs.readFileSync("src/Sql/create/createData/trigerrs.sql", "utf-8");
 var lines = trigers.split('\n');
 
-function connect() {
-  connection.connect(err => {
-    if (err) console.log(err)
-    connection.query(first, (err, result) => {
-      if(err) {
-        connection.query(create, 
-          async (err, result) => {
 
-            if (!err) {
+class Sql {
 
-              for (line of lines) {
-                await connection.query(line, (err, result) => { 
-                  if( err) console.log('alredy exists')})
+  static instance;
+
+  constructor (name = "Sql"){
+    if (!! Sql.instance) {
+      return Sql.instance;
+    }
+
+    Sql.instance = this;
+    this.name = name;
+    this.connected = false;
+    this.sql = connection;
+  }
+
+  connect() {
+    this.sql.connect(err => {
+      if (err) return(err)
+      this.sql.query(first, (err, result) => {
+        if(err) {
+          this.sql.query(create, 
+            async (err, result) => {
+              if (!err) {
+                for (line of lines) {
+                  await this.sql.query(line, (err, result) => { 
+                    if( err) console.log('alredy exists')})
+                }
               }
-            }
-        })
-      } 
-    });
-  })
+          })
+        } 
+      });
+    })
+    this.connected = true;
+  };
 };
 
-async function callConnect() {
-  await connect();
-  await connection.query("use node_api", (err, result) => {
-    if(result) console.log("connected") 
-  })
-}
+const sql = new Sql();
 
 
-module.exports.callConnect = callConnect;
-module.exports.connection = connection;
+module.exports.sql = sql;
+module.exports.connection = sql.sql;
 // >node src/sql/create/create.js

@@ -14,9 +14,10 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "jest": "^26.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
     "mysql": "github:mysqljs/mysql",
-    "supertest": "^6.1.3",
-    "sync-mysql": "^3.0.1"
+    "supertest": "^6.1.3"
   },
   "devDependencies": {
     "express": "^4.17.1"

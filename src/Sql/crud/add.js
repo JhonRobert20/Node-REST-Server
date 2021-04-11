@@ -2,10 +2,10 @@ const { connection } = require('../create/create');
 const { throwDices } = require('../../Functions/dices');
 const { sendResponse } = require('../../Functions/sendResponse');
 
-// function createUser: POST: /players : crea un jugador
+// function addUser: POST: /players : crea un jugador
 // fucntion makeThrow: POST /players/{id}/games/ : un jugador específic realitza una tirada dels daus.
 
-function createUser(name, res) {
+function addUser(name, res) {
   var queryAddUser = '';
 
   if (name === '' || name === undefined){
@@ -27,5 +27,5 @@ function makeThrow(id, res) {
   connection.query(queryAddThrow, (err, result) => sendResponse(res, err, result));
 }
 
-module.exports.createUser = createUser;
+module.exports.addUser = addUser;
 module.exports.makeThrow = makeThrow;
