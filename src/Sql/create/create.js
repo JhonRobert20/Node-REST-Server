@@ -30,7 +30,7 @@ class Sql {
           this.sql.query(create, 
             async (err, result) => {
               if (!err) {
-                for (line of lines) {
+                for (let line of lines) {
                   await this.sql.query(line, (err, result) => { 
                     if( err) console.log('alredy exists')})
                 }

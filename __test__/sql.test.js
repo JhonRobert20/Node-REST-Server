@@ -18,7 +18,7 @@ describe("connect sql / read actual data / add data / find user 250 / add user c
   test("first we need to create / call the app", async () => {
     await request(app)
     .get("/players/")
-    .expect(200)
+    .expect(404)
   });
 
   test("ranking, should return a true", async () => {

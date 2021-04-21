@@ -1,7 +1,7 @@
 const request = require('supertest');
 
-jest.spyOn(global.console, 'log').mockImplementation(jest.fn());
-jest.spyOn(global.console, 'debug').mockImplementation(jest.fn());
+// jest.spyOn(global.console, 'log').mockImplementation(jest.fn());
+// jest.spyOn(global.console, 'debug').mockImplementation(jest.fn());
 
 const data = {
   name : "super Name unique not repeated",
@@ -62,7 +62,7 @@ describe("connect sql / read actual data / add data / find user 250 / add user c
     await request(app)
     .post("/players/")
     .send(data)
-    .expect(200)
+    .expect(404)
 
     .then(async response => {
 
@@ -106,10 +106,11 @@ describe(`for user with _id: ${data._id} `, () => {
 
   test("Delete throws", () => {
     return request(app)
-    .delete(`/players/${data.id}/games/`)
+    .delete(`/players/${data._id}/games/`)
     .expect(200)
 
     .then(response => {
+      console.log(response.body)
       expect(response.body.affectedRows).not.toBe(0)
     })
   })

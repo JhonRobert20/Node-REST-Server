@@ -24,7 +24,7 @@ app.route("/players/:id/:name/")
 app.route("/players/:id/games/")
 .get((req, res) => { findById(req.params.id, res) })
 .post((req, res) => { makeThrow(req.params.id, res)})
-.delete((req, res) => { deleteThrows(req.params.id, res)})
+.delete((req, res) => { console.log(req.params); deleteThrows(req.params.id, res)})
 
 app.get("/players/ranking/", (req, res) => { ranking(res)})
 app.get("/players/ranking/losers", (req, res) => { rankingLosers(res)})
