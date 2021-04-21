@@ -15,7 +15,7 @@ function verifyToken(req, res, next) {
     next();
 
   } else {
-    res.sendStatus(403);
+    res.status(403);
     res.json({
       success: false,
       message: "please create a token" 
