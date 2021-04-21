@@ -1,9 +1,10 @@
 const fs = require('fs');
 const { connection } = require('../../Config/sql')
+const path = require("path");
 
 var first = "use node_api";
-var create = fs.readFileSync("src/Sql/create/createData/crear.sql", "utf-8");
-var trigers = fs.readFileSync("src/Sql/create/createData/trigerrs.sql", "utf-8");
+var create = fs.readFileSync(path.resolve(__dirname ,"./createData/crear.sql"), "utf-8");
+var trigers = fs.readFileSync(path.resolve(__dirname ,"./createData/trigerrs.sql"), "utf-8");
 var lines = trigers.split('\n');
 
 

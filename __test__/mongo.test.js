@@ -1,7 +1,7 @@
 const request = require('supertest');
 
-// jest.spyOn(global.console, 'log').mockImplementation(jest.fn());
-// jest.spyOn(global.console, 'debug').mockImplementation(jest.fn());
+jest.spyOn(global.console, 'log').mockImplementation(jest.fn());
+jest.spyOn(global.console, 'debug').mockImplementation(jest.fn());
 
 const data = {
   name : "super Name unique not repeated",
@@ -110,7 +110,6 @@ describe(`for user with _id: ${data._id} `, () => {
     .expect(200)
 
     .then(response => {
-      console.log(response.body)
       expect(response.body.affectedRows).not.toBe(0)
     })
   })

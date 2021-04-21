@@ -1,8 +1,9 @@
 const request = require('supertest');
 const fs = require('fs');
+const path = require("path");
 
-const add = fs.readFileSync('src/sql/testData/insert.sql', 'utf-8');
-const dele = fs.readFileSync('src/sql/testData/delete.sql', 'utf-8');
+const add = fs.readFileSync(path.resolve(__dirname, '../src/sql/testData/insert.sql'), 'utf-8');
+const dele = fs.readFileSync(path.resolve(__dirname, '../src/sql/testData/delete.sql'), 'utf-8');
 
 var linesAdd = add.split('\n');
 var linesDe = dele.split('\n');
