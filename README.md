@@ -1,8 +1,8 @@
 # Node REST Server + MongoDB/MySql + JWT, Jhon Robert
 
-npm install;
-npm test to run test;
-node index.js to run server;
+npm install;</br>
+npm test to run test;</br>
+node index.js to run server;</br>
 Check in src/Config for your database config
 
 # Routes for postman:
