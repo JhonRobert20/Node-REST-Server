@@ -1,28 +1,41 @@
 const jwt = require('jsonwebtoken');
+const { client } = require('../../Config/redis')
+const { sendBadResponse } = require('../../Functions/sendResponse')
 
-const user = {
-  id: 1,
-  username: 'guess',
-  email: 'guess@gmail.com'
-}
 
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
-  
-  if(typeof bearerHeader !== 'undefined') {
-    const token = bearerHeader.split(' ')[1];
-    req.token = token;
-    next();
+  client.GET('userId', (err, value) => {
+    if(!err) {
+      req.token = value;
+      next()
+    } else {
+      sendBadResponse(res, "please create a token", 403)
+    } 
+  })    
+};
 
-  } else {
-    res.status(403);
-    res.json({
-      success: false,
-      message: "please create a token" 
+function loginJwt(req, res) {
+    jwt.sign({ }, 'secretkey', { expiresIn: '3600s' }, (err, token) => {
+        if(err) {
+          sendBadResponse(res, err.message, 404)
+          return;
+        }
+        
+        client.SET("userId", token, 'EX', 60 * 60, (err, reply) => {
+            if(err) {
+                sendBadResponse(res, err.message, 404)
+                return;
+            }
+            var name = req.body.name ? req.body.name : "you don't have a name";
+            var password = req.body.password ? req.body.password : "you don't have a password";
+            
+            client.SET("name", name);
+            client.SET("password", password);
+            
+            res.json({ succes: true, token })
+        })
     })
-  }
 }
 
-module.exports.user = user;
-module.exports.jwt = jwt;
+module.exports.loginJwt = loginJwt;
 module.exports.verifyToken = verifyToken;

@@ -6,19 +6,16 @@ const { addUser, makeThrow } = require('../crud/create')
 const { updateName } = require('../crud/update')
 const { findAll, findById, ranking, rankingLosers, rankingWinners } = require('../crud/read')
 const { deleteThrows } = require('../crud/delete')
-const { user, verifyToken, jwt } = require('../../Jwt/auth/app')
+const { verifyToken, loginJwt } = require('../../Jwt/auth/app')
 
-const app = express()
+
+const app = express();
 
 mongo.connect();
 
 app.use(json());
 
-app.post('/login', (req, res) => {
-  jwt.sign({ user }, 'secretkey', { expiresIn: '3600s' }, (err, token) => {
-      if(!err) res.json({ token });
-  })
-});
+app.post('/login', (req, res) => { loginJwt(req, res) });
 
 app.route("/players/")
 .post(verifyToken, (req, res) => { addUser(req.body, res) })

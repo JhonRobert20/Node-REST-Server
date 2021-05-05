@@ -1,15 +1,16 @@
-# Node REST Server + MongoDB/MySql + JWT, Jhon Robert
+# Node REST Server + MongoDB/MySql + JWT + Redis, Jhon Robert
 
 npm install;</br>
 npm test to run test;</br>
 node index.js to run server;</br>
-Check in src/Config for your database config
+to use the redis server you should write "redis-server" on your cmd</br>
+Check in src/Config for your database and redis config</br>
 
 # Routes for postman:
 
 http://localhost:8000/login/
-- .post, you don't need pass nothing
-- In headers: Authorization  Bearer "your token"
+- .post, you can pass "name" and "password" in post body
+- saved in readys
 - You can use this token up to 1 hour after creating it
 
 http://localhost:8000/players/

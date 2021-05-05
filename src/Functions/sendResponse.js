@@ -20,4 +20,13 @@ function sendResponse(res, err, data){
   }
 };
 
+function sendBadResponse(res, message, status) {
+  res.status(status);
+  res.json({
+    success: false,
+    message: message
+  })
+};
+
+module.exports.sendBadResponse = sendBadResponse;
 module.exports.sendResponse = sendResponse;
